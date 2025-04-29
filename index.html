@@ -1,13 +1,52 @@
+<html>
 
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test AR Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- Include A-Frame and MindAR libraries -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+  
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+  
+  <script>
+  window.addEventListener('targetFound', function () {
+    // Get video element by id
+    var videoElement = document.getElementById("Bunny");
+    
+    // Play the video
+    videoElement.play();
+  });
+
+  </script>
 </head>
+
 <body>
-    <h1>Welcome to ChuVanAnAR Page</h1>
-    <p>This is a test page hosted on GitHub Pages to test domain setup.</p>
+  <a-scene
+    mindar-image="imageTargetSrc:https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/targets%20(2).mind?v=1745832089980;"
+    color-space="sRGB" renderer="colorManagement: true,
+physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <!-- Add the GIF as an asset -->
+      <video id="Bunny" loop="true" autoplay  playsinline webkit-playsinline crossorigin="anonymous" muted="true"
+        src="https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/arvideo.mp4?v=1745832826730"></video>
+      <a-asset-item id="raccoonModel" src="https://cdn.glitch.global/877d44f0-3022-45fe-8c27-42821291f253/model.glb?v=1745777764656"></a-asset-item>
+
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-video src="#Bunny" width="3" height="1.656" position="0 0 0"></a-video>
+      <!-- <a-video shader="chromakey" color="0.1 0.9 0.2" src="#Bunny" width="1" height="0.552" position="0 0 0"></a-video> -->
+              <a-gltf-model 
+            rotation="0 0 0 " 
+            position="0 -0.25 0" 
+            scale="0.5 0.5 0.5" 
+            src="#raccoonModel" 
+            animation-mixer>
+        </a-gltf-model>
+    </a-entity>
+  </a-scene>
 </body>
 </html>
