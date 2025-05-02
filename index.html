@@ -23,13 +23,13 @@
 
 <body>
   <a-scene
-    mindar-image="imageTargetSrc:https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/targets%20(2).mind?v=1745832089980;"
+    mindar-image="imageTargetSrc:https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/targets%20(4).mind?v=1746175184812;"
     color-space="sRGB" renderer="colorManagement: true,
 physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
     <a-assets>
       <!-- Add the GIF as an asset -->
       <video id="Bunny" loop="true" autoplay  playsinline webkit-playsinline crossorigin="anonymous" muted="true"
-        src="https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/arvideo.mp4?v=1745832826730"></video>
+        src="https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/FN9.mp4?v=1746175580127"></video>
       <a-asset-item id="raccoonModel" src="https://cdn.glitch.global/877d44f0-3022-45fe-8c27-42821291f253/model.glb?v=1745777764656"></a-asset-item>
 
     </a-assets>
@@ -46,6 +46,10 @@ physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permissi
             src="#raccoonModel" 
             animation-mixer>
         </a-gltf-model>
+    </a-entity>
+        <a-entity mindar-image-target="targetIndex: 8">
+      <a-video src="#Bunny" width="1.248" height="0.702" position="0.15 0 0"></a-video>
+      <!-- <a-video shader="chromakey" color="0.1 0.9 0.2" src="#Bunny" width="1" height="0.552" position="0 0 0"></a-video> -->
     </a-entity>
   </a-scene>
 </body>
