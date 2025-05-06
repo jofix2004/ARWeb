@@ -5,16 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Index Cơ Bản</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap');
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         button {
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
-            margin: 10px;
+            margin: 5px;
             border: none;
             border-radius: 5px;
             background-color: #4CAF50;
@@ -23,16 +29,139 @@
         button:hover {
             background-color: #45a049;
         }
+        .image-container {
+        display: flex;
+        justify-content: center; /* căn giữa ngang */
+        align-items: center;     /* căn giữa dọc (nếu cần) */
+        margin: 20px;
+
+        }
+
+        .image-container img {
+        display: block;
+        width: 75%;
+        height: auto;
+        max-width: 100%; /* mặc định trên mobile */
+        }
+
+        /* Khi màn hình >= 768px (tablet trở lên), giới hạn lại */
+        @media (min-width: 768px) {
+        .image-container img {
+            width: auto;
+            max-width: 350px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 100px;
+            width: auto;
+            max-width: 350px;
+            max-width: 100%; /* mặc định trên mobile */
+        }
+
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 100px;
+            width: 70%;
+            height: auto;
+            max-width: 100%;
+            gap: 5px; /* mặc định trên mobile */
+        }
+
+
+        .webar {
+        font-family: 'Arial', sans-serif; /* Phông chữ cho "WebAR" */
+        font-weight: bold;
+         /* Bạn có thể thay đổi các thuộc tính khác của phông chữ nếu muốn */
+        }
+
+        .ios-priority {
+        font-family: 'Courier New', monospace; /* Phông chữ cho "(iOS ưu tiên)" */
+        font-style: italic; /* Bạn có thể thay đổi kiểu chữ, ví dụ: in nghiêng */
+        }
+
+
+        button.custom-button {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            text-align: left;
+        }
+
+        button.custom-button:hover {
+            background-color: #45a049;
+        }
+
+        .icon-webar {
+            width: 40px;
+            height: 40px;
+            background-color: white; /* màu nền icon */
+            border-radius: 5px;
+        }
+
+        .text-webar {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.2;
+        }
+
     </style>
 </head>
 <body>
-    <h1>Chào mừng đến với trang index cơ bản</h1>
+    <div class="image-container">
+        <img src="\ARWeb-main\assets\logo.png">
+    </div>
+    <div class="button-container">
+        <div class="webar-container">
+            <!-- Nút 1: Gắn liên kết đến một trang khác -->
+            <button class="custom-button" onclick="window.location.href='ar.html';">
+                <div class="icon-webar"></div>
+                <div class="text-webar">
+                    <span class="webar">WebAR</span>
+                    <span class="ios-priority">(iOS ưu tiên)</span>
+                </div>
+            </button>
+            
+        </div> 
+        <div class="webar-container">
+            <!-- Nút 1: Gắn liên kết đến một trang khác -->
+            <button class="custom-button" onclick="window.location.href='ar.html';">
+                <div class="icon-webar"></div>
+                <div class="text-webar">
+                    <span class="webar">WebAR</span>
+                    <span class="ios-priority">(iOS ưu tiên)</span>
+                </div>
+            </button>
+            
+        </div>    
+        <div class="webar-container">
+            <!-- Nút 1: Gắn liên kết đến một trang khác -->
+            <button class="custom-button" onclick="window.location.href='ar.html';">
+                <div class="icon-webar"></div>
+                <div class="text-webar">
+                    <span class="webar">WebAR</span>
+                    <span class="ios-priority">(iOS ưu tiên)</span>
+                </div>
+            </button>
+            
+        </div>   
+                 
+              
 
-    <!-- Nút 1: Gắn liên kết đến một trang khác -->
-    <button onclick="window.location.href='https://www.example.com';">Đi đến Example</button>
-
-    <!-- Nút 2: Dẫn đến trang ar.html -->
-    <button onclick="window.location.href='ar.html';">Đi đến ar.html</button>
+    </div>
 
 </body>
 </html>

@@ -10,13 +10,70 @@
     <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
   
   <script>
-  window.addEventListener('targetFound', function () {
-    // Get video element by id
-    var videoElement = document.getElementById("Bunny");
-    
-    // Play the video
-    videoElement.play();
-  });
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const targetMap = {
+        target0: { videoId: null, buttonId: "target0-button", audioId: "audio1" }, // Bổ sung target0
+        target1: { videoId: "FN2", buttonId: "target1-button", audioId: "audio2" },
+        target2: { videoId: "FN3", buttonId: "target2-button", audioId: "audio3" },
+        target3: { videoId: null, buttonId: "target3-button", audioId: "audio4" },
+        target4: { videoId: "FN5", buttonId: "target4-button", audioId: "audio5" },
+        target5: { videoId: "FN6", buttonId: "target5-button", audioId: "audio6" },
+        target6: { videoId: null, buttonId: "target6-button", audioId: "audio7" },
+        target7: { videoId: "FN8", buttonId: "target7-button", audioId: "audio8" },
+        target8: { videoId: "FN9", buttonId: "target8-button", audioId: "audio9" },
+        target9: { videoId: "FN10", buttonId: "target9-button", audioId: "audio10" },
+        target10: { videoId: null, buttonId: "target10-button", audioId: "audio11" },
+        target11: { videoId: "FN12", buttonId: "target11-button", audioId: "audio12" },
+      };
+
+      Object.keys(targetMap).forEach((targetId) => {
+        const target = document.querySelector(`#${targetId}`);
+        const { videoId, buttonId, audioId } = targetMap[targetId];
+
+        const video = videoId ? document.getElementById(videoId) : null;
+        const button = document.getElementById(buttonId);
+        const audio = document.getElementById(audioId);
+
+        target.addEventListener("targetFound", () => {
+          if (video) video.play();
+          button.style.display = "block";
+
+          // Dừng tất cả âm thanh khác
+          Object.values(targetMap).forEach(({ audioId: otherAudioId }) => {
+            const otherAudio = document.getElementById(otherAudioId);
+            if (otherAudio && otherAudio !== audio && !otherAudio.paused) {
+              otherAudio.pause();
+              otherAudio.currentTime = 0;
+            }
+          });
+
+          audio.currentTime = 0;
+          audio.play();
+        });
+
+        target.addEventListener("targetLost", () => {
+          if (video) {
+            video.pause();
+            video.currentTime = 0;
+          }
+          button.style.display = "none";
+
+          if (!audio.paused) {
+            audio.pause();
+            audio.currentTime = 0;
+          }
+        });
+
+        button.addEventListener("click", () => {
+          audio.currentTime = 0;
+          audio.play();
+        });
+      });
+    });
+
+
+
   
       AFRAME.registerShader('custom-opacity-gradient', {
         schema: {
@@ -48,43 +105,200 @@
         `
       });
   </script>
+  <style>
+    #target0-button,
+    #target1-button,
+    #target2-button,
+    #target3-button,
+    #target4-button,
+    #target5-button,
+    #target6-button,
+    #target7-button,
+    #target8-button,
+    #target9-button,
+    #target10-button,
+    #target11-button {
+      display: none;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+    }
+  </style>
+
+  
 </head>
 
 <body>
+  <audio id="audio1" src="assets/01.mp3"></audio>
+  <audio id="audio2" src="assets/02.mp3"></audio>
+  <audio id="audio3" src="assets/03.mp3"></audio>
+  <audio id="audio4" src="assets/04.mp3"></audio>
+  <audio id="audio5" src="assets/05.mp3"></audio>
+  <audio id="audio6" src="assets/06.mp3"></audio>
+  <audio id="audio7" src="assets/07.mp3"></audio>
+  <audio id="audio8" src="assets/08.mp3"></audio>
+  <audio id="audio9" src="assets/09.mp3"></audio>
+  <audio id="audio10" src="assets/10.mp3"></audio>
+  <audio id="audio11" src="assets/11.mp3"></audio>
+  <audio id="audio12" src="assets/12.mp3"></audio>
+  
+
+  <button id="target0-button">FN1</button>
+  <button id="target1-button">FN2</button>
+  <button id="target2-button">FN3</button>
+  <button id="target3-button">FN4</button>
+  <button id="target4-button">FN5</button>
+  <button id="target5-button">FN6</button>
+  <button id="target6-button">FN7</button>
+  <button id="target7-button">FN8</button>
+  <button id="target8-button">FN9</button>
+  <button id="target9-button">FN10</button>
+  <button id="target10-button">FN11</button>
+  <button id="target11-button">FN12</button>
+  
+
+
   <a-scene
     mindar-image="imageTargetSrc:https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/targets%20(4).mind?v=1746175184812;"
     color-space="sRGB" renderer="colorManagement: true,
 physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
     <a-assets>
       <!-- Add the GIF as an asset -->
-      <video id="Bunny" loop="true" autoplay  playsinline webkit-playsinline crossorigin="anonymous" muted="true"
-        src="https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/FN9.mp4?v=1746175580127"></video>
-      <a-asset-item id="raccoonModel" src="https://cdn.glitch.global/877d44f0-3022-45fe-8c27-42821291f253/model.glb?v=1745777764656"></a-asset-item>
+
+      <video id="FN2" loop="true" autoplay playsinline webkit-playsinline crossorigin="anonymous" muted="true" src="assets/FN2.mp4"></video>
+      <video id="FN3" loop="true" autoplay playsinline webkit-playsinline crossorigin="anonymous" muted="true" src="assets/FN3.mp4"></video>
+      <video id="FN5" loop="true" autoplay playsinline webkit-playsinline crossorigin="anonymous" muted="true" src="assets/FN5.mp4"></video>
+      <video id="FN6" loop="true" autoplay playsinline webkit-playsinline crossorigin="anonymous" muted="true" src="assets/FN6.mp4"></video>
+      <video id="FN8" loop="true" autoplay playsinline webkit-playsinline crossorigin="anonymous" muted="true" src="assets/FN8.mp4"></video>
+      <video id="FN9" loop="true" autoplay playsinline webkit-playsinline crossorigin="anonymous" muted="true" src="assets/FN9.mp4"></video>
+      <video id="FN10" loop="true" autoplay playsinline webkit-playsinline crossorigin="anonymous" muted="true" src="assets/FN10.mp4"></video>
+      <video id="FN12" loop="true" autoplay playsinline webkit-playsinline crossorigin="anonymous" muted="true" src="assets/FN12.mp4"></video>
+      
+
+
+      
+      <a-asset-item id="FN1" src="assets/01.glb"></a-asset-item>
+      <a-asset-item id="FN4" src="assets/04.glb"></a-asset-item>
+      <a-asset-item id="FN7" src="assets/07.glb"></a-asset-item>
+      <a-asset-item id="FN11" src="assets/11.glb"></a-asset-item>
 
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-video src="#Bunny" width="1.24" height="0.702" position="0 0 0"></a-video>
-      <!-- <a-video shader="chromakey" color="0.1 0.9 0.2" src="#Bunny" width="1" height="0.552" position="0 0 0"></a-video> -->
+    <a-entity id="target0" mindar-image-target="targetIndex: 0">
         <a-gltf-model 
             rotation="0 0 0 " 
-            position="0 -0.25 0" 
-            scale="0.5 0.5 0.5" 
-            src="#raccoonModel" 
+            position="0 0 0" 
+            scale="0.15 0.15 0.15" 
+            src="#FN1" 
             animation-mixer>
         </a-gltf-model>
-    </a-entity>
-        <a-entity mindar-image-target="targetIndex: 8">
-      <!-- <a-video shader="chromakey" color="0.1 0.9 0.2" src="#Bunny" width="1" height="0.552" position="0 0 0"></a-video> -->
-          <a-plane
-        position="0.12 0 0"
-        width="1.24"
-        height="0.702"
-        material="shader: custom-opacity-gradient; video: #Bunny; transparent: true"
-      ></a-plane>
-    </a-entity>
+      </a-entity>
+
+      <a-entity id="target3" mindar-image-target="targetIndex: 3">
+        <a-gltf-model 
+            rotation="0 0 0 " 
+            position="0 0 0" 
+            scale="0.1 0.1 0.1" 
+            src="#FN4" 
+            animation-mixer>
+        </a-gltf-model>
+      </a-entity>
+
+      <a-entity id="target6" mindar-image-target="targetIndex: 6">
+        <a-gltf-model 
+            rotation="0 45 0 " 
+            position="-0.25 0 0" 
+            scale="0.13 0.13 0.13" 
+            src="#FN7" 
+            animation-mixer>
+        </a-gltf-model>
+      </a-entity>
+
+      <a-entity id="target10" mindar-image-target="targetIndex: 10">
+        <a-gltf-model 
+            rotation="0 0 0 " 
+            position="0 -0.15 0" 
+            scale="0.04 0.04 0.04" 
+            src="#FN11" 
+            animation-mixer>
+        </a-gltf-model>
+      </a-entity>
+
+
+      <a-entity id="target1" mindar-image-target="targetIndex: 1">
+        <a-plane
+          position="0.12 0 0"
+          width="1.24"
+          height="0.702"
+          material="shader: custom-opacity-gradient; video: #FN2; transparent: true"
+        ></a-plane>
+      </a-entity>
+      
+      <a-entity id="target2" mindar-image-target="targetIndex: 2">
+        <a-plane
+          position="0.12 0 0"
+          width="1.24"
+          height="0.702"
+          material="shader: custom-opacity-gradient; video: #FN3; transparent: true"
+        ></a-plane>
+      </a-entity>
+      
+      <a-entity id="target4" mindar-image-target="targetIndex: 4">
+        <a-plane
+          position="0.12 0 0"
+          width="1.24"
+          height="0.702"
+          material="shader: custom-opacity-gradient; video: #FN5; transparent: true"
+        ></a-plane>
+      </a-entity>
+      
+      <a-entity id="target5" mindar-image-target="targetIndex: 5">
+        <a-plane
+          position="0.12 0 0"
+          width="1.24"
+          height="0.702"
+          material="shader: custom-opacity-gradient; video: #FN6; transparent: true"
+        ></a-plane>
+      </a-entity>
+      
+      <a-entity id="target7" mindar-image-target="targetIndex: 7">
+        <a-plane
+          position="0.12 0 0"
+          width="1.24"
+          height="0.702"
+          material="shader: custom-opacity-gradient; video: #FN8; transparent: true"
+        ></a-plane>
+      </a-entity>
+      
+      <a-entity id="target8" mindar-image-target="targetIndex: 8">
+        <a-plane
+          position="0.12 0 0"
+          width="1.24"
+          height="0.702"
+          material="shader: custom-opacity-gradient; video: #FN9; transparent: true"
+        ></a-plane>
+      </a-entity>
+      
+      <a-entity id="target9" mindar-image-target="targetIndex: 9">
+        <a-plane
+          position="0.12 0 0"
+          width="1.24"
+          height="0.702"
+          material="shader: custom-opacity-gradient; video: #FN10; transparent: true"
+        ></a-plane>
+      </a-entity>
+      
+      <a-entity id="target11" mindar-image-target="targetIndex: 11">
+        <a-plane
+          position="0.12 0 0"
+          width="1.24"
+          height="0.702"
+          material="shader: custom-opacity-gradient; video: #FN12; transparent: true"
+        ></a-plane>
+      </a-entity>
   </a-scene>
 </body>
 </html>

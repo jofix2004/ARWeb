@@ -1,0 +1,174 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <!-- Include A-Frame and MindAR libraries -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+  
+    <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+  
+  <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+  const targetMap = {
+    target0: { videoId: "FN9", buttonId: "target0-button", audioId: "audio9" },
+    target1: { videoId: "FN2", buttonId: "target1-button", audioId: "audio2" },
+    target8: { videoId: "FN9", buttonId: "target8-button", audioId: "audio9" },
+  };
+
+  Object.keys(targetMap).forEach((targetId) => {
+    const target = document.querySelector(`#${targetId}`);
+    const { videoId, buttonId, audioId } = targetMap[targetId];
+
+    const video = document.getElementById(videoId);
+    const button = document.getElementById(buttonId);
+    const audio = document.getElementById(audioId);
+
+    // targetFound: hiện nút + phát video và âm thanh
+    target.addEventListener("targetFound", () => {
+      video.play();
+      button.style.display = "block";
+
+      // Dừng tất cả âm thanh khác
+      Object.values(targetMap).forEach(({ audioId: otherAudioId }) => {
+        const otherAudio = document.getElementById(otherAudioId);
+        if (otherAudio && otherAudio !== audio && !otherAudio.paused) {
+          otherAudio.pause();
+          otherAudio.currentTime = 0;
+        }
+      });
+
+      // Phát âm thanh tương ứng
+      audio.currentTime = 0;
+      audio.play();
+    });
+
+    // targetLost: ẩn nút + dừng âm thanh
+    target.addEventListener("targetLost", () => {
+      button.style.display = "none";
+      if (!audio.paused) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    });
+
+    // nếu vẫn muốn giữ chức năng click thì giữ lại:
+    button.addEventListener("click", () => {
+      audio.currentTime = 0;
+      audio.play();
+    });
+  });
+});
+
+
+
+
+  
+      AFRAME.registerShader('custom-opacity-gradient', {
+        schema: {
+          video: { type: 'map', is: 'uniform' },
+        },
+        vertexShader: `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec2 vUv;
+          uniform sampler2D video;
+          void main() {
+            vec4 color = texture2D(video, vUv);
+            // Độ rộng của vùng gradient (10% mỗi cạnh)
+            float edgeWidth = 0.05;
+            // Tính opacity cho mỗi cạnh
+            float leftEdge = smoothstep(0.0, 0.02, vUv.x); // Trái
+            float rightEdge = smoothstep(1.0, 1.0 - 0.2, vUv.x); // Phải
+            float bottomEdge = smoothstep(0.0, edgeWidth, vUv.y); // Dưới
+            float topEdge = smoothstep(1.0, 1.0 - edgeWidth, vUv.y); // Trên
+            // Kết hợp opacity từ tất cả các cạnh (lấy giá trị nhỏ nhất)
+            float opacity = min(min(leftEdge, rightEdge), min(bottomEdge, topEdge));
+            gl_FragColor = vec4(color.rgb, opacity);
+          }
+        `
+      });
+  </script>
+  <style>
+    #target0-button,
+    #target1-button,
+    #target8-button {
+      display: none;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+    }
+  </style>
+  
+</head>
+
+<body>
+  <audio id="audio2" src="assets/02.mp3"></audio>
+<audio id="audio9" src="assets/09.mp3"></audio>
+
+  <button id="target0-button">FN1</button>
+  <button id="target1-button">FN2</button>
+  <button id="target8-button">FN9</button>
+
+
+  <a-scene
+    mindar-image="imageTargetSrc:https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/targets%20(4).mind?v=1746175184812;"
+    color-space="sRGB" renderer="colorManagement: true,
+physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <!-- Add the GIF as an asset -->
+
+      <video id="FN2" loop="true" autoplay  playsinline webkit-playsinline crossorigin="anonymous" muted="true"
+      src="assets/FN2.mp4"></video>
+
+      <video id="FN9" loop="true" autoplay  playsinline webkit-playsinline crossorigin="anonymous" muted="true"
+      src="assets/FN9.mp4"></video>
+      
+      <a-asset-item id="raccoonModel" src="https://cdn.glitch.global/877d44f0-3022-45fe-8c27-42821291f253/model.glb?v=1745777764656"></a-asset-item>
+
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity id="target0" mindar-image-target="targetIndex: 0">
+      <a-video src="#FN9" width="1.24" height="0.702" position="0 0 0"></a-video>
+      <!-- <a-video shader="chromakey" color="0.1 0.9 0.2" src="#Bunny" width="1" height="0.552" position="0 0 0"></a-video> -->
+        <a-gltf-model 
+            rotation="0 0 0 " 
+            position="0 -0.25 0" 
+            scale="0.5 0.5 0.5" 
+            src="#raccoonModel" 
+            animation-mixer>
+        </a-gltf-model>
+      </a-entity>
+
+
+    <a-entity id="target1" mindar-image-target="targetIndex: 1">
+          <a-plane
+        position="0.12 0 0"
+        width="1.24"
+        height="0.702"
+        material="shader: custom-opacity-gradient; video: #FN2; transparent: true"
+      ></a-plane>
+    </a-entity>
+
+    <a-entity id="target8" mindar-image-target="targetIndex: 8">
+      <!-- <a-video shader="chromakey" color="0.1 0.9 0.2" src="#Bunny" width="1" height="0.552" position="0 0 0"></a-video> -->
+          <a-plane
+        position="0.12 0 0"
+        width="1.24"
+        height="0.702"
+        material="shader: custom-opacity-gradient; video: #FN9; transparent: true"
+      ></a-plane>
+    </a-entity>
+  </a-scene>
+</body>
+</html>
