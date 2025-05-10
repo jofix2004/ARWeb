@@ -12,8 +12,10 @@
   <script>
 
     document.addEventListener("DOMContentLoaded", function () {
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
       const targetMap = {
-        target0: { videoId: null, buttonId: "target0-button", audioId: "audio1" }, // Bổ sung target0
+        target0: { videoId: null, buttonId: "target0-button", audioId: "audio1" },
         target1: { videoId: "FN2", buttonId: "target1-button", audioId: "audio2" },
         target2: { videoId: "FN3", buttonId: "target2-button", audioId: "audio3" },
         target3: { videoId: null, buttonId: "target3-button", audioId: "audio4" },
@@ -30,16 +32,25 @@
       Object.keys(targetMap).forEach((targetId) => {
         const target = document.querySelector(`#${targetId}`);
         const { videoId, buttonId, audioId } = targetMap[targetId];
-
         const video = videoId ? document.getElementById(videoId) : null;
         const button = document.getElementById(buttonId);
         const audio = document.getElementById(audioId);
 
+        // Cập nhật văn bản nút theo trạng thái âm thanh
+        const updateButtonText = () => {
+          button.textContent = audio.muted || audio.paused ? "🔇 Bật tiếng" : "🔊 Tắt tiếng";
+        };
+
+        // Khi target được nhận diện
         target.addEventListener("targetFound", () => {
-          if (video) video.play();
+          if (video) {
+            video.play();
+          }
+
+          // Hiện nút
           button.style.display = "block";
 
-          // Dừng tất cả âm thanh khác
+          // Dừng tất cả các âm thanh khác
           Object.values(targetMap).forEach(({ audioId: otherAudioId }) => {
             const otherAudio = document.getElementById(otherAudioId);
             if (otherAudio && otherAudio !== audio && !otherAudio.paused) {
@@ -49,25 +60,44 @@
           });
 
           audio.currentTime = 0;
-          audio.play();
+
+          // Với thiết bị không phải iOS, autoplay audio
+          if (!isIOS) {
+            audio.muted = false;
+            audio.play();
+          }
+
+          updateButtonText();
         });
 
+        // Khi target bị mất
         target.addEventListener("targetLost", () => {
           if (video) {
             video.pause();
             video.currentTime = 0;
           }
-          button.style.display = "none";
 
           if (!audio.paused) {
             audio.pause();
             audio.currentTime = 0;
           }
+
+          button.style.display = "none";
         });
 
+        // Click nút để bật/tắt tiếng hoặc phát lại
         button.addEventListener("click", () => {
-          audio.currentTime = 0;
-          audio.play();
+          if (audio.paused) {
+            audio.currentTime = 0;
+            audio.muted = false;
+            audio.play();
+          } else {
+            audio.muted = !audio.muted;
+            if (audio.muted) {
+              audio.pause();
+            }
+          }
+          updateButtonText();
         });
       });
     });
@@ -120,10 +150,44 @@
     #target11-button {
       display: none;
       position: absolute;
-      top: 10px;
-      left: 10px;
+      bottom: 10px;     /* Đổi từ top thành bottom */
+      right: 10px;      /* Căn phải */
       z-index: 9999;
+
+      padding: 10px 16px;
+      background-color: #ffffff;
+      color: #333;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s ease;
     }
+
+    #target0-button:hover,
+    #target1-button:hover,
+    #target2-button:hover,
+    #target3-button:hover,
+    #target4-button:hover,
+    #target5-button:hover,
+    #target6-button:hover,
+    #target7-button:hover,
+    #target8-button:hover,
+    #target9-button:hover,
+    #target10-button:hover,
+    #target11-button:hover {
+      background-color: #f0f0f0;
+      color: #000;
+      border-color: #999;
+      transform: scale(1.05);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+    }
+
+
+
   </style>
 
   
@@ -160,7 +224,7 @@
 
 
   <a-scene
-    mindar-image="imageTargetSrc:https://cdn.glitch.global/b0ef8f7c-e11c-44ab-82b1-3128256e36f1/targets%20(4).mind?v=1746175184812;"
+    mindar-image="imageTargetSrc:targets.mind;"
     color-space="sRGB" renderer="colorManagement: true,
 physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
     <a-assets>
@@ -189,8 +253,8 @@ physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permissi
 
     <a-entity id="target0" mindar-image-target="targetIndex: 0">
         <a-gltf-model 
-            rotation="0 0 0 " 
-            position="0 0 0" 
+            rotation="90 0 0 " 
+            position="0 0 0.33" 
             scale="0.15 0.15 0.15" 
             src="#FN1" 
             animation-mixer>
@@ -199,9 +263,9 @@ physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permissi
 
       <a-entity id="target3" mindar-image-target="targetIndex: 3">
         <a-gltf-model 
-            rotation="0 0 0 " 
-            position="0 0 0" 
-            scale="0.1 0.1 0.1" 
+            rotation="90 0 0 " 
+            position="0 0.1 0.25" 
+            scale="0.12 0.12 0.12" 
             src="#FN4" 
             animation-mixer>
         </a-gltf-model>
@@ -209,8 +273,8 @@ physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permissi
 
       <a-entity id="target6" mindar-image-target="targetIndex: 6">
         <a-gltf-model 
-            rotation="0 45 0 " 
-            position="-0.25 0 0" 
+            rotation="0 90 90 " 
+            position="0 0 0.3" 
             scale="0.13 0.13 0.13" 
             src="#FN7" 
             animation-mixer>
@@ -219,9 +283,9 @@ physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permissi
 
       <a-entity id="target10" mindar-image-target="targetIndex: 10">
         <a-gltf-model 
-            rotation="0 0 0 " 
-            position="0 -0.15 0" 
-            scale="0.04 0.04 0.04" 
+            rotation="90 0 0 " 
+            position="0 -0.09 0.05" 
+            scale="0.025 0.025 0.025" 
             src="#FN11" 
             animation-mixer>
         </a-gltf-model>

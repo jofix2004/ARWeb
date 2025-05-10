@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Index Cơ Bản</title>
+    <title>Chu Văn An Truyện Tranh</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
         body {
             font-family: Arial, sans-serif;
@@ -15,153 +16,160 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .image-container {
-        display: flex;
-        justify-content: center; /* căn giữa ngang */
-        align-items: center;     /* căn giữa dọc (nếu cần) */
-        margin: 20px;
-
+            background-color: #fcf7eb;
         }
 
-        .image-container img {
-        display: block;
-        width: 75%;
-        height: auto;
-        max-width: 100%; /* mặc định trên mobile */
-        }
-
-        /* Khi màn hình >= 768px (tablet trở lên), giới hạn lại */
-        @media (min-width: 768px) {
-        .image-container img {
-            width: auto;
+        .container {
+            width: 100%;
             max-width: 350px;
-        }
-        .button-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 100px;
-            width: auto;
-            max-width: 350px;
-            max-width: 100%; /* mặc định trên mobile */
-        }
-
-        }
-        .button-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            margin-top: 100px;
-            width: 70%;
+            align-items: center;
+        }
+
+        .image-container {
+            width: 100%;
+        }
+
+        .image-container img {
+            display: block;
+            width: 100%;
             height: auto;
-            max-width: 100%;
-            gap: 5px; /* mặc định trên mobile */
         }
 
-
-        .webar {
-        font-family: 'Arial', sans-serif; /* Phông chữ cho "WebAR" */
-        font-weight: bold;
-         /* Bạn có thể thay đổi các thuộc tính khác của phông chữ nếu muốn */
+        .cta-container {
+            margin-top: 100px;
+            margin-bottom: 50px;
+            font-family: "Cal Sans", sans-serif;
+            font-size: 20px;
+            color: #663300;
+            line-height: 1.6;
         }
 
-        .ios-priority {
-        font-family: 'Courier New', monospace; /* Phông chữ cho "(iOS ưu tiên)" */
-        font-style: italic; /* Bạn có thể thay đổi kiểu chữ, ví dụ: in nghiêng */
+        .button-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
+        .webar-container {
+            width: 100%;
+        }
 
         button.custom-button {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             gap: 10px;
-            padding: 10px;
-            font-size: 16px;
+            font-size: 17px;
             cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #4CAF50;
-            color: white;
+            border: #733b0edf solid 3px;
+            border-radius: 4px;
+            background-color: transparent;
+            color: #582d09;
             width: 100%;
-            text-align: left;
+            padding: 12px 20px;
         }
 
         button.custom-button:hover {
-            background-color: #45a049;
+            scale: 1.05;
+            transition: scale 0.3s;
+        }
+
+        .ebook-button {
+            opacity: 0.6;
+            border-color: #a67c52;
+            color: #7c5430;
+            font-size: 16px;
+        }
+
+        .ebook-button:hover {
+            scale: 1.02;
+            opacity: 0.75;
         }
 
         .icon-webar {
             width: 40px;
             height: 40px;
-            background-color: white; /* màu nền icon */
+            background-color: transparent;
             border-radius: 5px;
         }
 
         .text-webar {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
             line-height: 1.2;
         }
 
+        .webar {
+            font-family: "Cal Sans", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            font-size: 18px;
+        }
+
+        footer {
+            font-family: "Open Sans", sans-serif;
+            width: 100%;
+            text-align: center;
+            padding: 0px;
+            font-size: 12px;
+            color: #33333374;
+            background-color: transparent;
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+        }
+
+        footer p {
+            margin: 0;
+        }
+        .icon-webar img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 70%;
+        }
     </style>
 </head>
 <body>
-    <div class="image-container">
-        <img src="\ARWeb-main\assets\logo.png">
-    </div>
-    <div class="button-container">
-        <div class="webar-container">
-            <!-- Nút 1: Gắn liên kết đến một trang khác -->
-            <button class="custom-button" onclick="window.location.href='ar.html';">
-                <div class="icon-webar"></div>
-                <div class="text-webar">
-                    <span class="webar">WebAR</span>
-                    <span class="ios-priority">(iOS ưu tiên)</span>
-                </div>
-            </button>
-            
-        </div> 
-        <div class="webar-container">
-            <!-- Nút 1: Gắn liên kết đến một trang khác -->
-            <button class="custom-button" onclick="window.location.href='ar.html';">
-                <div class="icon-webar"></div>
-                <div class="text-webar">
-                    <span class="webar">WebAR</span>
-                    <span class="ios-priority">(iOS ưu tiên)</span>
-                </div>
-            </button>
-            
-        </div>    
-        <div class="webar-container">
-            <!-- Nút 1: Gắn liên kết đến một trang khác -->
-            <button class="custom-button" onclick="window.location.href='ar.html';">
-                <div class="icon-webar"></div>
-                <div class="text-webar">
-                    <span class="webar">WebAR</span>
-                    <span class="ios-priority">(iOS ưu tiên)</span>
-                </div>
-            </button>
-            
-        </div>   
-                 
-              
+    <div class="container">
+        <div class="image-container">
+            <img src="\ARWeb-main\assets\logo.png" alt="Logo">
+        </div>
 
-    </div>
+        <!-- CTA / Slogan -->
+        <div class="cta-container">
+            Mở rộng trải nghiệm đọc truyện bằng công nghệ thực tế ảo tăng cường (AR)
+        </div>
 
+        <div class="button-container">
+            <div class="webar-container">
+                <button class="custom-button" onclick="window.location.href='ar.html';">
+                    <div class="icon-webar">
+                        <img src="assets/arlogo.png" alt="ARlogo">
+                    </div>
+                    <div class="text-webar">
+                        <span class="webar">KHÁM PHÁ AR</span>
+                    </div>
+                </button>
+            </div>
+            <div class="webar-container">
+                <button class="custom-button ebook-button" onclick="window.location.href='ebook.html';">
+                    <div class="icon-webar">
+                        <img src="assets/ebooklogo.png" alt="Ebooklogo">
+                    </div>
+                    <div class="text-webar">
+                        <span class="webar"> Đọc bản Ebook</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>Liên Hệ: 20tranlinh.1@gmail.com</p>
+        <p>Thực hiện bởi Dự án “Tao nhân tân thể”</p>
+    </footer>
 </body>
 </html>
